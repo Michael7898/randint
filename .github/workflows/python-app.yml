@@ -1,0 +1,29 @@
+name: Python application
+
+# Ce workflow se déclenche sur deux événements : push et pull_request
+on: [push, pull_request]
+
+# Définition d'un seul job nommé "build"
+jobs:
+  build:
+    runs-on: ubuntu-latest  # Ce job s'exécute sur un runner avec l'image Ubuntu-latest
+
+    steps:
+      # Cette étape utilise l'action actions/checkout@v2 pour cloner le code du dépôt
+      - uses: actions/checkout@v2
+
+      # Cette étape utilise l'action actions/setup-python@v2 pour configurer un environnement Python 3.8
+      - name: Configurer Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.8'
+
+      # Cette étape installe les dépendances. Elle met d'abord pip à jour puis installe pytest.
+      - name: Installer les dépendances
+        run: |
+          python -m pip install --upgrade pip
+          pip install pytest
+
+      # Cette étape lance les tests en utilisant pytest
+      - name: Exécuter Pytest
+        run: pytest
